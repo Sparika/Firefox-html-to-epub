@@ -58,6 +58,18 @@ directory_METAINF .create("w");
 		  file_container.open('w')
 		  file_container.write("<?xml version=\"1.0\"?> \n <container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\"> \n <rootfiles> \n <rootfile full-path=\"OEBPS/content.opf\" \n media-type=\"application/oebps-package+xml\" /> \n </rootfiles> \n </container>");
 		  file_container.close();
+//Suppression des fichiers temporaires 
+var directory_TESTDIR = new Dir(filePath + "/TESTDIR");
+directory_TESTDIR.create("w");
+var dirService = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
+var homeDirFile = dirService.get("Home", Components.interfaces.nsIFile);
+var homeDir = homeDirFile.path;
+
+var file = dirService.get("TmpD", Components.interfaces.nsIFile);
+file.append("test.tmp");
+file.createUnique(Components.interfaces.nsIFile.NORMAL_FIL_TYPE, 0666);
+alert(file.path);
+
 
 
 		  alert("5");
