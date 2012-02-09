@@ -2,38 +2,38 @@
 
 <?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
 <?xml-stylesheet type="text/css"
-  href="chrome://xulschoolhello/skin/browserOverlay.css" ?>
+  href="chrome://xulfhte/skin/browserOverlay.css" ?>
 
 <!DOCTYPE overlay SYSTEM
-  "chrome://xulschoolhello/locale/browserOverlay.dtd">
+  "chrome://xulfhte/locale/browserOverlay.dtd">
 
-<overlay id="xulschoolhello-browser-overlay"
+<overlay id="xulfhte-browser-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/x-javascript" src="chrome://jslib/content/jslib.js" />
   <script type="application/x-javascript"
-    src="chrome://xulschoolhello/content/browserOverlay.js" />
+    src="chrome://xulfhte/content/browserOverlay.js" />
 
   <stringbundleset id="stringbundleset">
-    <stringbundle id="xulschoolhello-string-bundle"
-      src="chrome://xulschoolhello/locale/browserOverlay.properties" />
+    <stringbundle id="xulfhte-string-bundle"
+      src="chrome://xulfhte/locale/browserOverlay.properties" />
   </stringbundleset>
 
   <menupopup id="menu_FilePopup">
-        <menuitem id="xulschoolhello-hello-menu-item1"
+        <menuitem id="xulfhte-fhte-menu-item1"
           label="Save as Epub"
-          oncommand="XULSchoolChrome.BrowserOverlay.sayHello(event);" />
+          oncommand="XULFHtEChrome.BrowserOverlay.doWork(event);" />
   </menupopup>
 
   <vbox id="appmenuSecondaryPane">
-    <menu id="xulschoolhello-hello-menu-2" label="&xulschoolhello.hello.label;"
-      accesskey="&xulschoolhello.helloMenu.accesskey;"
+    <menu id="xulfhte-fhte-menu-2" label="&xulfhte.fhte.label;"
+      accesskey="&xulfhte.fhteMenu.accesskey;"
       insertafter="appmenu_addons">
       <menupopup>
-        <menuitem id="xulschoolhello-hello-menu-item-2"
-          label="&xulschoolhello.hello.label;"
-          accesskey="&xulschoolhello.helloItem.accesskey;"
-          oncommand="XULSchoolChrome.BrowserOverlay.sayHello(event);" />
+        <menuitem id="xulfhte-fhte-menu-item-2"
+          label="&xulfhte.fhte.label;"
+          accesskey="&xulfhte.fhteItem.accesskey;"
+          oncommand="XULFHtEChrome.BrowserOverlay.doWork(event);" />
       </menupopup>
     </menu>
   </vbox>

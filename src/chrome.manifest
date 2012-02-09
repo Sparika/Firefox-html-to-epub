@@ -1,5 +1,5 @@
-content   xulschoolhello                content/
-skin      xulschoolhello  classic/1.0   skin/
-locale    xulschoolhello  en-US         locale/en-US/
+content   xulfhte                content/
+skin      xulfhte  classic/1.0   skin/
+locale    xulfhte  en-US         locale/en-US/
 
-overlay chrome://browser/content/browser.xul  chrome://xulschoolhello/content/browserOverlay.xul
+overlay chrome://browser/content/browser.xul  chrome://xulfhte/content/browserOverlay.xul
