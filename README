@@ -1,0 +1,24 @@
+=====================================================================
+                                                                       
+                              ======                                   
+                              README                                   
+                              ======                                   
+                                                                       
+                          HTMLtoEPUB v0.1
+                          09 February 2012
+                                                                       
+                         Firefox extension 
+
+                  Mozilla // University of Orleans
+
+         web: http://sparika.github.com/Firefox-html-to-epub/          
+                                                                       
+=====================================================================
+
+This project aims at allowing Firefox's users to save an HTML page as an EPUB (Electronic Book).
+
+Install
+Drag and drop the xpi file (locate in /bin directory) onto your browser.
+
+Contact
+Kevin (kevin.corre@etu.univ-orleans.fr) 
