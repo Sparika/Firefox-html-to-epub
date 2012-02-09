@@ -18,7 +18,7 @@
 This project aims at allowing Firefox's users to save an HTML page as an EPUB (Electronic Book).
 
 Install
-Drag and drop the xpi file (locate in /bin directory) onto your browser.
+Drag and drop the xpi file (located in /bin directory) onto your browser.
 
 Contact
 Kevin (kevin.corre@etu.univ-orleans.fr) 
