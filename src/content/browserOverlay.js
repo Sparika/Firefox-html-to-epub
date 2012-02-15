@@ -102,11 +102,7 @@ XULFHtEChrome.BrowserOverlay = {
       var istream = converter.convertToInputStream("application/epub+zip");  
   
       // The last argument (the callback) is optional.  
-      NetUtil.asyncCopy(istream, ostream, function(status) {  
-      if (!Components.isSuccessCode(status)) {  
-        alert("erreur 1"); 
-        return;  
-      }    
+      NetUtil.asyncCopy(istream, ostream);
 
     /**
      * Zip the whole structure without compressing the first file (mimetype)
