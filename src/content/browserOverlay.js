@@ -99,10 +99,27 @@ XULFHtEChrome.BrowserOverlay = {
       var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].  
                       createInstance(Components.interfaces.nsIScriptableUnicodeConverter);  
       converter.charset = "UTF-8";  
-      var istream = converter.convertToInputStream("application/epub+zip");  
-  
-      // The last argument (the callback) is optional.  
+      var istream = converter.convertToInputStream("application/epub+zip");    
       NetUtil.asyncCopy(istream, ostream);
+
+    // var file will be reused for each files
+      var file;
+
+    // container.xml
+      file = Components.classes["@mozilla.org/file/local;1"]
+             .createInstance(Components.interfaces.nsILocalFile);
+      file.initWithPath(METAINF.path);
+      var oFOStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                      .createInstance(Components.interfaces.nsIFileOutputStream);  
+      var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties)
+                 .get("ProfD", Components.interfaces.nsILocalFile); // get profile folder  
+      file.append("container.xml"); // filename  
+      oFOStream.init(oFile, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
+
+      //create DOM doc
+      
+      (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
+      oFOStream.close();  
 
     /**
      * Zip the whole structure without compressing the first file (mimetype)
