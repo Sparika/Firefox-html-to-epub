@@ -1,3 +1,6 @@
+
+Components.utils.import("resource://gre/modules/NetUtil.jsm");  
+Components.utils.import("resource://gre/modules/FileUtils.jsm"); 
 /**
  * XULfhte namespace.
  */
@@ -77,13 +80,33 @@ XULFHtEChrome.BrowserOverlay = {
 
     /**
      * Collect files informations
-     */
-//TODO
-
+     */  
+      var entries = webFiles.directoryEntries;  
+      var array = [];  
+      while(entries.hasMoreElements())  
+      {  
+        var entry = entries.getNext();  
+        entry.QueryInterface(Components.interfaces.nsIFile);  
+        array.push(entry);  
+      }  
     /**
      * Create XML files which are mandatory for Epub such as mimetype, toc, content, container .. 
      */
-//TODO
+    // mimetype
+      tmp_D.append("mimetype");
+      var ostream = FileUtils.openSafeFileOutputStream(tmp_D);  
+  
+      var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].  
+                      createInstance(Components.interfaces.nsIScriptableUnicodeConverter);  
+      converter.charset = "UTF-8";  
+      var istream = converter.convertToInputStream("application/epub+zip");  
+  
+      // The last argument (the callback) is optional.  
+      NetUtil.asyncCopy(istream, ostream, function(status) {  
+      if (!Components.isSuccessCode(status)) {  
+        alert("erreur 1"); 
+        return;  
+      }    
 
     /**
      * Zip the whole structure without compressing the first file (mimetype)
