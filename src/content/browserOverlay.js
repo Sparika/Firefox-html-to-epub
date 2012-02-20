@@ -76,19 +76,21 @@ XULFHtEChrome.BrowserOverlay = {
       }*/
       var wbp = Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']  
 		      .createInstance(Components.interfaces.nsIWebBrowserPersist);  
-	  wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);  
+	  wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);
 
     /**
      * Collect files informations
-     */  
-      var entries = webFiles.directoryEntries;  
-      var array = [];  
-      while(entries.hasMoreElements())  
-      {  
-        var entry = entries.getNext();  
-        entry.QueryInterface(Components.interfaces.nsIFile);  
-        array.push(entry);  
-      }  
+     */
+      if (webFiles.exists()){
+	var entries = webFiles.directoryEntries;
+	var array = [];  
+	while(entries.hasMoreElements())  
+	{  
+	  var entry = entries.getNext();  
+	  entry.QueryInterface(Components.interfaces.nsIFile);  
+	  array.push(entry);  
+	}
+      }
     /**
      * Create XML files which are mandatory for Epub such as mimetype, toc, content, container .. 
      */
@@ -104,23 +106,55 @@ XULFHtEChrome.BrowserOverlay = {
 
     // var file will be reused for each files
       var file;
-
+      
     // container.xml
       file = Components.classes["@mozilla.org/file/local;1"]
              .createInstance(Components.interfaces.nsILocalFile);
-      file.initWithPath(METAINF.path);
+      file.initWithPath(METAINF_D.path);
       var oFOStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                      .createInstance(Components.interfaces.nsIFileOutputStream);  
-      var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties)
-                 .get("ProfD", Components.interfaces.nsILocalFile); // get profile folder  
+                      .createInstance(Components.interfaces.nsIFileOutputStream);   
       file.append("container.xml"); // filename  
-      oFOStream.init(oFile, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
+      oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
 
       //create DOM doc
-      
-      (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
-      oFOStream.close();  
+      var doc = document.implementation.createDocument("", "", null);
+      var container = doc.createElement("container");
+      container.setAttribute("version", "1.0");
+      var rootfiles = doc.createElement("rootfiles");
+      var rootfile1 = doc.createElement("rootfile");
+      rootfile1.setAttribute("full-path", "OEBPS/content.opf");
+      rootfile1.setAttribute("media-type", "application/oebps-package+xml");
+      rootfiles.appendChild(rootfile1);
+      container.appendChild(rootfiles);
+      doc.appendChild(container);
 
+      (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
+      oFOStream.close();
+      
+    // content.opf
+      file = Components.classes["@mozilla.org/file/local;1"]
+             .createInstance(Components.interfaces.nsILocalFile);
+      file.initWithPath(OEBPS_D.path);
+      var oFOStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                      .createInstance(Components.interfaces.nsIFileOutputStream);   
+      file.append("content.opf"); // filename  
+      oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
+      //doc
+      (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
+      oFOStream.close();
+      
+    // toc.ncx
+      file = Components.classes["@mozilla.org/file/local;1"]
+             .createInstance(Components.interfaces.nsILocalFile);
+      file.initWithPath(OEBPS_D.path);
+      var oFOStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                      .createInstance(Components.interfaces.nsIFileOutputStream);   
+      file.append("toc.ncx"); // filename  
+      oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
+      //doc
+      (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
+      oFOStream.close();
+      
     /**
      * Zip the whole structure without compressing the first file (mimetype)
      */
