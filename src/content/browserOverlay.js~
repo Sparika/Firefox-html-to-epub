@@ -30,20 +30,8 @@ XULFHtEChrome.BrowserOverlay = {
 
     if(rv == nsIFilePicker.returnOK){
       epub = fp.file;
-      var epubPath = Components.classes["@mozilla.org/file/local;1"]
-      .createInstance(Components.interfaces.nsILocalFile);
-      epubPath.initWithPath(epub.path+".epub");
-      
-    var ios = Components.classes['@mozilla.org/network/io-service;1']  
-          .getService(Components.interfaces.nsIIOService);  
-    var uri = ios.newURI("http://www.google.com/", null, null);
-    
-    const NOB = 2; // number of bytes in URI
-    var buffer = "aaa";  
-    var prng = Components.classes['@mozilla.org/security/random-generator;1'];  
-    buffer =  prng.getService(Components.interfaces.nsIRandomGenerator).generateRandomBytes(NOB, buffer);
-    
-    //alert(buffer.toString());
+      var epubPath = epub.path;
+
     /**
      * Save html page to working directory
      */
@@ -88,28 +76,25 @@ XULFHtEChrome.BrowserOverlay = {
       }*/
       var wbp = Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']  
 		      .createInstance(Components.interfaces.nsIWebBrowserPersist);  
-	  wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);
+	  wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);  
 
     /**
      * Collect files informations
-     */
-      if (webFiles.exists()){
-	var entries = webFiles.directoryEntries;
-	var array = [];  
-	while(entries.hasMoreElements())  
-	{
-	  var entry = entries.getNext();  
-	  entry.QueryInterface(Components.interfaces.nsIFile);  
-	  array.push(entry);
-	}
-      }
+     */  
+      var entries = webFiles.directoryEntries;  
+      var array = [];  
+      while(entries.hasMoreElements())  
+      {  
+        var entry = entries.getNext();  
+        entry.QueryInterface(Components.interfaces.nsIFile);  
+        array.push(entry);  
+      }  
     /**
      * Create XML files which are mandatory for Epub such as mimetype, toc, content, container .. 
      */
     // mimetype
-      var mimetype = tmp_D.clone();
-      mimetype.append("mimetype");
-      var ostream = FileUtils.openSafeFileOutputStream(mimetype);  
+      tmp_D.append("mimetype");
+      var ostream = FileUtils.openSafeFileOutputStream(tmp_D);  
   
       var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].  
                       createInstance(Components.interfaces.nsIScriptableUnicodeConverter);  
@@ -119,7 +104,7 @@ XULFHtEChrome.BrowserOverlay = {
 
     // var file will be reused for each files
       var file;
-      
+
     // container.xml
       file = Components.classes["@mozilla.org/file/local;1"]
              .createInstance(Components.interfaces.nsILocalFile);
@@ -136,14 +121,16 @@ XULFHtEChrome.BrowserOverlay = {
       var rootfiles = doc.createElement("rootfiles");
       var rootfile1 = doc.createElement("rootfile");
       rootfile1.setAttribute("full-path", "OEBPS/content.opf");
+      var value = doc.createTextNode("toto");
       rootfile1.setAttribute("media-type", "application/oebps-package+xml");
+      rootfile1.appendChild(value);
       rootfiles.appendChild(rootfile1);
       container.appendChild(rootfiles);
       doc.appendChild(container);
 
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
-      
+
     // content.opf
       file = Components.classes["@mozilla.org/file/local;1"]
              .createInstance(Components.interfaces.nsILocalFile);
@@ -155,7 +142,7 @@ XULFHtEChrome.BrowserOverlay = {
       //doc
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
-      
+
     // toc.ncx
       file = Components.classes["@mozilla.org/file/local;1"]
              .createInstance(Components.interfaces.nsILocalFile);
@@ -167,11 +154,12 @@ XULFHtEChrome.BrowserOverlay = {
       //doc
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
-      
+
+
     /**
      * Zip the whole structure without compressing the first file (mimetype)
      */
-      zipFolder(tmp_D, epubPath);
+//TODO
 
     /**
      * Delete all temporary files
