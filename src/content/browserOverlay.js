@@ -174,46 +174,14 @@ XULFHtEChrome.BrowserOverlay = {
     /**
      * Zip the whole structure without compressing the first file (mimetype)
      */
-      zipFolder(tmp_D, epubPath);
+      zipFolder(tmp_D, epubPath, mimetype);
 
     /**
      * Delete all temporary files
      */
-        //All file have been created in temporary directory 
-
-      /*
-
-//TODO conservé pour ref, a nettoyer une fois devenu inutile  
-      var file_mimetype = new File(filePath + "/mimetype");
-	  	file_mimetype.create();
-	  	file_mimetype.open('w')
-	  	file_mimetype.write("application/epub+zip");
-	  	file_mimetype.close();
-  
-      
-  
-      var directory_images = new Dir(filePath + "/OEBPS" + "/images");
-      directory_images .create("w");
-  
-      
-  
-  
-      var file_container = new File(filePath + "/META-INF" + "/container.xml");
-	  	file_container.create();
-	  	file_container.open('w')
-	  	file_container.write("<?xml version=\"1.0\"?> \n <container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\"> \n <rootfiles> \n <rootfile full-path=\"OEBPS/content.opf\" \n media-type=\"application/oebps-package+xml\" /> \n </rootfiles> \n </container>");	     
-      file_container.close();
-      //Suppression des fichiers temporaires 
-      var directory_TESTDIR = new Dir(filePath + "/TESTDIR");
-      directory_TESTDIR.create("w");
-      var dirService = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
-      var homeDirFile = dirService.get("Home", Components.interfaces.nsIFile);
-      var homeDir = homeDirFile.path;
-  
-      var file = 
-      file.append("test.tmp");
-      file.createUnique(Components.interfaces.nsIFile.NORMAL_FIL_TYPE, 0666);
-      alert(file.path);*/
+        //All file have been created in temporary directory
+	
+	
       alert("terminé avec succès");
     }
   }
