@@ -1,15 +1,19 @@
 <?xml version="1.0"?>
 
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  -->
+
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>helloworld@xulschool.com</em:id>
-    <em:name>XUL School Hello World</em:name>
-    <em:description>Welcome to XUL School!</em:description>
+    <em:id>kevin.corre@etu.univ-orleans.fr</em:id>
+    <em:name>Firefox HTML to EPUB</em:name>
+    <em:description>Save HTML to EPUB file</em:description>
     <em:version>0.1</em:version>
-    <em:creator>Appcoast</em:creator>
-    <em:homepageURL>https://developer.mozilla.org/en/XUL_School</em:homepageURL>
+    <em:creator>Mozilla/Universite d'Orleans</em:creator>
+    <em:homepageURL>http://sparika.github.com/Firefox-html-to-epub/</em:homepageURL>
     <em:type>2</em:type>
 
     <!-- Mozilla Firefox -->
