@@ -32,14 +32,17 @@ XULFHtEChrome.BrowserOverlay = {
     if (rv == fp.returnCancel) return;
 
     if(rv == nsIFilePicker.returnOK){
+      if(rv == nsIFilePicker.returnOK){
       epub = fp.file;
+      var cleanpath = epub.path;
+      cleanpath = cleanpath.replace(".epub", "", "gi");
       var epubPath = Components.classes["@mozilla.org/file/local;1"]
-      .createInstance(Components.interfaces.nsILocalFile);
-      epubPath.initWithPath(epub.path+".epub");
+	.createInstance(Components.interfaces.nsILocalFile);
+      epubPath.initWithPath(cleanpath+".epub");
       
-    var ios = Components.classes['@mozilla.org/network/io-service;1']  
-          .getService(Components.interfaces.nsIIOService);  
-    var uri = ios.newURI("http://www.google.com/", null, null);
+      var ios = Components.classes['@mozilla.org/network/io-service;1']  
+        .getService(Components.interfaces.nsIIOService);  
+       var uri = ios.newURI("http://www.google.com/", null, null);
     
     const NOB = 2; // number of bytes in URI
     var buffer = "aaa";  
