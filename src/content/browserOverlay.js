@@ -44,10 +44,11 @@ XULFHtEChrome.BrowserOverlay = {
         .getService(Components.interfaces.nsIIOService);  
        var uri = ios.newURI("http://www.google.com/", null, null);
     
-    const NOB = 2; // number of bytes in URI
-    var buffer = "aaa";  
-    var prng = Components.classes['@mozilla.org/security/random-generator;1'];  
-    buffer =  prng.getService(Components.interfaces.nsIRandomGenerator).generateRandomBytes(NOB, buffer);
+    var uuidGenerator =  
+    Components.classes["@mozilla.org/uuid-generator;1"].getService(Components.interfaces.nsIUUIDGenerator);
+    var uuid = uuidGenerator.generateUUID();
+    var uuidString = uuid.toString();
+    var uri = "urn:uuid:"+uuidString;
     
     //alert(buffer.toString());
     /**
@@ -56,7 +57,7 @@ XULFHtEChrome.BrowserOverlay = {
       var dirService = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
       var tmp_D = dirService.get("TmpD", Components.interfaces.nsIFile);
       //TODO: concatenate FHtE with a random number
-      tmp_D.append("FHtE");
+      tmp_D.append("FHtE"+uuidString);
       if( !tmp_D.exists() || !tmp_D.isDirectory() ) {   // if it doesn't exist, create  
         tmp_D.createUnique(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);  
       }
@@ -93,7 +94,8 @@ XULFHtEChrome.BrowserOverlay = {
         webFiles.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);  
       }*/
       var wbp = Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']  
-		      .createInstance(Components.interfaces.nsIWebBrowserPersist);  
+		      .createInstance(Components.interfaces.nsIWebBrowserPersist);
+	  //wbp.persistFlags=PERSIST_FLAGS_IGNORE_REDIRECTED_DATA | PERSIST_FLAGS_IGNORE_IFRAMES;
 	  wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);
 
     /**
@@ -185,7 +187,7 @@ XULFHtEChrome.BrowserOverlay = {
       publisher.appendChild(doc.createTextNode("publisherText")); 
 
       var identifier = doc.createElement("dc:identifier");
-      identifier.appendChild(doc.createTextNode("identifierText")); 
+      identifier.appendChild(doc.createTextNode(uri)); 
       
       metadata.appendChild(title);
       metadata.appendChild(creator);
@@ -218,49 +220,55 @@ XULFHtEChrome.BrowserOverlay = {
 	var name = pagewithoutext(pageref);
 	var ext = exte(pageref);
 	alert("PAGEREF : "+pageref+" NAME : "+name+" EXT : "+ext);
-
 	if (ext == "html")
 	{
-	 var item = doc.createElement("item");
-	 item.setAttribute("id",name);
-	 item.setAttribute("href",pageref);
-	 item.setAttribute("media-type","application/xhtml+xml");
-	 var itemspine = doc.createElement("item");
-	 itemspine.setAttribute("idref",name);
-	 spine.appendChild(itemspine);
-       	 manifest.appendChild(item);
+	  var item = doc.createElement("item");
+	  item.setAttribute("id",name);
+	  item.setAttribute("href",pageref);  
+	  item.setAttribute("media-type","application/xhtml+xml");
+	  var itemspine = doc.createElement("item");
+	  itemspine.setAttribute("idref",name);
+	  spine.appendChild(itemspine);
+	  manifest.appendChild(item);
 	}
 	else if (ext == "css")
 	{
-	 var item = doc.createElement("item");
- 	 item.setAttribute("id",name);
-	 item.setAttribute("href",pageref);
-	 item.setAttribute("media-type","text/css");
-       	 manifest.appendChild(item);
+	  var item = doc.createElement("item");
+	  item.setAttribute("id",name);
+	  item.setAttribute("href",pageref);
+	  item.setAttribute("media-type","text/css");
+	  manifest.appendChild(item);
 	}
 	else if (ext == "jpeg")
 	{
-	 var item = doc.createElement("item");
-	 item.setAttribute("id",name);
-	 item.setAttribute("href",pageref);
-	 item.setAttribute("media-type","image/jpeg+xml");
-         manifest.appendChild(item);
+	  var item = doc.createElement("item");
+	  item.setAttribute("id",name);
+	  item.setAttribute("href",pageref);
+	  item.setAttribute("media-type","image/jpeg+xml");
+	  manifest.appendChild(item);
 	}
 	else if (ext == "png")
 	{
-	 var item = doc.createElement("item");
-	 item.setAttribute("id",name);
-	 item.setAttribute("href",pageref);
-	 item.setAttribute("media-type","image/png+xml");
-         manifest.appendChild(item);
+	  var item = doc.createElement("item");
+	  item.setAttribute("id",name);
+	  item.setAttribute("href",pageref);
+	  item.setAttribute("media-type","image/png+xml");
+	  manifest.appendChild(item);
 	}
+	else
+	{
+	  var item = doc.createElement("item");
+	  item.setAttribute("id",name);
+	  item.setAttribute("href",pageref);
+	  item.setAttribute("media-type","text/plain");
+	  manifest.appendChild(item);
+	}	
       }//for
-	
-	Package.appendChild(metadata);
-	Package.appendChild(manifest);
-	Package.appendChild(spine);
-
-	doc.appendChild(Package);
+      
+      Package.appendChild(metadata);
+      Package.appendChild(manifest);
+      Package.appendChild(spine);
+      doc.appendChild(Package);
       
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
