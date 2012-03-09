@@ -99,9 +99,10 @@ XULFHtEChrome.BrowserOverlay = {
     /**
      * Collect files informations
      */
+      var array = [];
       if (webFiles.exists()){
 	var entries = webFiles.directoryEntries;
-	var array = [];  
+	//var array = [];  
 	while(entries.hasMoreElements())  
 	{
 	  var entry = entries.getNext();  
@@ -158,7 +159,109 @@ XULFHtEChrome.BrowserOverlay = {
                       .createInstance(Components.interfaces.nsIFileOutputStream);   
       file.append("content.opf"); // filename  
       oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
-      //doc
+      /*fill content.opf*/
+      
+      var doc = document.implementation.createDocument("", "", null);
+      var Package = doc.createElement("package");
+      Package.setAttribute("version","2.0");
+      Package.setAttribute("xmlns","http://www.idpf.org/2007/opf");
+      Package.setAttribute("unique-identifier","BookId");
+      
+      var metadata = doc.createElement("metadata");
+
+      var title = doc.createElement("dc:title");
+      title.appendChild(doc.createTextNode("titleText"));
+      
+      var creator = doc.createElement("dc:creator");
+      creator.appendChild(doc.createTextNode("creatorText")); 
+      
+      var language = doc.createElement("dc:language");
+      language.appendChild(doc.createTextNode("languageText")); 
+
+      var rights = doc.createElement("dc:rights");
+      rights.appendChild(doc.createTextNode("rightsText")); 
+
+      var publisher = doc.createElement("dc:publisher");
+      publisher.appendChild(doc.createTextNode("publisherText")); 
+
+      var identifier = doc.createElement("dc:identifier");
+      identifier.appendChild(doc.createTextNode("identifierText")); 
+      
+      metadata.appendChild(title);
+      metadata.appendChild(creator);
+      metadata.appendChild(language);
+      metadata.appendChild(rights);
+      metadata.appendChild(publisher);
+      metadata.appendChild(identifier);
+
+      length = array.length; 
+
+      var manifest = doc.createElement("manifest");
+
+      var spine = doc.createElement("spine");
+      spine.setAttribute("toc","ncx");
+
+      var itemSpine = doc.createElement("item");
+      itemSpine.setAttribute("id","ncx");
+      itemSpine.setAttribute("href","toc.ncx");
+      itemSpine.setAttribute("media-type","application/x-dtbncx+xml");
+      manifest.appendChild(itemSpine);
+      
+      alert("Il y a  : "+length+" Elements");
+      
+      for(var i = 0;i<array.length;i++)
+      {
+	pageref = array[i];
+	alert("NSIFILE NUMERO "+i+" : "+ pageref);
+	pageref = pageref.leafName;
+	
+	var name = pagewithoutext(pageref);
+	var ext = exte(pageref);
+	alert("PAGEREF : "+pageref+" NAME : "+name+" EXT : "+ext);
+
+	if (ext == "html")
+	{
+	 var item = doc.createElement("item");
+	 item.setAttribute("id",name);
+	 item.setAttribute("href",pageref);
+	 item.setAttribute("media-type","application/xhtml+xml");
+	 var itemspine = doc.createElement("item");
+	 itemspine.setAttribute("idref",name);
+	 spine.appendChild(itemspine);
+       	 manifest.appendChild(item);
+	}
+	else if (ext == "css")
+	{
+	 var item = doc.createElement("item");
+ 	 item.setAttribute("id",name);
+	 item.setAttribute("href",pageref);
+	 item.setAttribute("media-type","text/css");
+       	 manifest.appendChild(item);
+	}
+	else if (ext == "jpeg")
+	{
+	 var item = doc.createElement("item");
+	 item.setAttribute("id",name);
+	 item.setAttribute("href",pageref);
+	 item.setAttribute("media-type","image/jpeg+xml");
+         manifest.appendChild(item);
+	}
+	else if (ext == "png")
+	{
+	 var item = doc.createElement("item");
+	 item.setAttribute("id",name);
+	 item.setAttribute("href",pageref);
+	 item.setAttribute("media-type","image/png+xml");
+         manifest.appendChild(item);
+	}
+      }//for
+	
+	Package.appendChild(metadata);
+	Package.appendChild(manifest);
+	Package.appendChild(spine);
+
+	doc.appendChild(Package);
+      
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
       
@@ -174,6 +277,9 @@ XULFHtEChrome.BrowserOverlay = {
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
       
+      
+      alert("Avant zippage");
+      
     /**
      * Zip the whole structure without compressing the first file (mimetype)
      */
@@ -187,5 +293,6 @@ XULFHtEChrome.BrowserOverlay = {
 	
       alert("terminé avec succès");
     }
+  }
   }
 };
