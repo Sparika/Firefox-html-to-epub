@@ -37,7 +37,6 @@ function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
 	var entries = nsiFolder.directoryEntries; 
 	while(entries.hasMoreElements()) 
 	{
-	alert("ANOTHER ENTRY");
 	var entry = entries.getNext(); 
 	entry.QueryInterface(Ci.nsIFile);
 	try{

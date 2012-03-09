@@ -70,7 +70,67 @@ function createTocFile(folderPath)
       file.append("toc.ncx"); // filename  
       oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
       var doc = document.implementation.createDocument("", "", null);
-      //doc
+
+     /*fill toc.ncx*/
+      var doc = document.implementation.createDocument("", "", null);
+      var ncx = doc.createElement("ncx");
+      ncx.setAttribute("xmlns","http://www.daisy.org/z3986/2005/ncx/");
+      ncx.setAttribute("version","2005-1");
+      
+      var head = doc.createElement("head");
+      
+      var meta = doc.createElement("meta");
+      meta.setAttribute("name","dtb:uid");
+      meta.setAttribute("content","http://www.hxa7241.org/articles/content/epup-guide_hxa7241_2007_2.epub");
+      
+      var meta1 = doc.createElement("meta");
+      meta1.setAttribute("name","dtb:depht");
+      meta1.setAttribute("content","2");
+      
+      var meta2 = doc.createElement("meta");
+      meta2.setAttribute("name","dtb:totalPageCount");
+      meta2.setAttribute("content","0");
+      
+      var meta3 = doc.createElement("meta");
+      meta3.setAttribute("name","dtb:maxPageNumber");
+      meta3.setAttribute("content","0");
+      
+      head.appendChild(meta);
+      head.appendChild(meta1);
+      head.appendChild(meta2);
+      head.appendChild(meta3);
+      
+      var docTitle = doc.createElement("docTitle");
+      var text = doc.createElement("text");
+      text.appendChild( doc.createTextNode("Epub page"));
+      
+      docTitle.appendChild(text);
+      
+      var navMap = doc.createElement("navMap");
+      
+      var navPoint = doc.createElement("navPoint");
+      navPoint.setAttribute("id","WebPage");
+      navPoint.setAttribute("playOrder","1");
+      
+      var navLabel = doc.createElement("navLabel");
+      var text1 = doc.createElement("text");
+      text1.appendChild(doc.createTextNode("Page"));
+      navLabel.appendChild(text1);
+      
+      var content = doc.createElement("content");
+      content.setAttribute("src","WebPage.html");
+      
+      navPoint.appendChild(navLabel);
+      navPoint.appendChild(content);
+      
+      navMap.appendChild(navPoint);
+      
+      ncx.appendChild(head);
+      ncx.appendChild(docTitle);
+      ncx.appendChild(navMap);
+
+      doc.appendChild(ncx);
+
       (new XMLSerializer()).serializeToStream(doc, oFOStream, "");  
       oFOStream.close();
       return file;

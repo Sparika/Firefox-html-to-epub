@@ -89,7 +89,8 @@ XULFHtEChrome.BrowserOverlay = {
 	//wbp.persistFlags=PERSIST_FLAGS_IGNORE_REDIRECTED_DATA | PERSIST_FLAGS_IGNORE_IFRAMES;
 	wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, wbp.ENCODE_FLAGS_RAW, null);
 
-	alert("TOOOOOOOOOOOOOOTOOOOOOOOOOOOOOOO");
+	//ISSUE : If there's not the alert, it does not work already because of synchroniation pb.
+	alert("MAKE THE SYNCHRONISE");
 
 	/**
 	* |3| Create XML files which are mandatory for Epub such as mimetype, toc, content, container .. 
