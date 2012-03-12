@@ -81,7 +81,7 @@ function createTocFile(folderPath)
       
       var meta = doc.createElement("meta");
       meta.setAttribute("name","dtb:uid");
-      meta.setAttribute("content","http://www.hxa7241.org/articles/content/epup-guide_hxa7241_2007_2.epub");
+      meta.setAttribute("content","http://sparika.github.com/Firefox-html-to-epub/");
       
       var meta1 = doc.createElement("meta");
       meta1.setAttribute("name","dtb:depht");

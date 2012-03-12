@@ -47,14 +47,15 @@ XULFHtEChrome.BrowserOverlay = {
     {  
      // If you use myListener for more than one tab/window, use  
      // aWebProgress.DOMWindow to obtain the tab/window which triggers the state change  
-     if(aFlag & STATE_START)  
+     if(aFlag & Components.interfaces.nsIWebProgressListener.STATE_START)  
      {  
        // This fires when the load event is initiated  
      }  
-     if(aFlag & STATE_STOP)  
-     {  
-       // This fires when the load finishes
-       createEPUB();
+     if(aFlag & Components.interfaces.nsIWebProgressListener.STATE_STOP)  
+     {
+      if (aFlag & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
+	// This fires when the load finishes
+	createEPUB();
      }  
     },  
     
@@ -132,7 +133,8 @@ function savePage(){
     var webFilesLocal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
     webFilesLocal.initWithPath(webFiles.path);
     wbp = Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1'].createInstance(Components.interfaces.nsIWebBrowserPersist);
-    wbp.progressListener=myListener;
+    //There isn't a addProgressListner for WebBrowserPersist    
+    wbp.progressListener = myListener;
     wbp.saveDocument(window.content.document, webPageLocal, webFilesLocal, null, null, null);
     //ISSUE : We need to wait for the saveDocument to be completed.
 
@@ -143,7 +145,8 @@ function createEPUB(){
   /**
   * |3| Create XML files which are mandatory for Epub such as mimetype, toc, content, container .. 
   */
-  wbp.progressListener=null;
+  //There isn't a removeProgressListner for WebBrowserPersist
+  //wbp.progressListener = null;
   // mimetype
   mimetypePtr = createMimetypeFile(tmp_D.path);
   // container.xml

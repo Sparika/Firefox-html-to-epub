@@ -33,61 +33,61 @@ function getBaseName(fileName){
 */
 function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
 {
-	//Get all entries from the folder 
-	var entries = nsiFolder.directoryEntries; 
-	while(entries.hasMoreElements()) 
-	{
-	var entry = entries.getNext(); 
-	entry.QueryInterface(Ci.nsIFile);
-	try{
-        if (entry.isDirectory())
-        {
-        	alert("EXPLODE : "+ entry.leafName);
-		addToManifest(manifestDomElement, entry, root + entry.leafName + "/");
-	}
-        else
-        {
-		pageref = entry.leafName;
-		var doc = document.implementation.createDocument("", "", null);
-		var basicName = getBaseName(pageref);
-		var ext = getExtension(pageref);
-		var item = doc.createElement("item");
+  //Get all entries from the folder 
+  var entries = nsiFolder.directoryEntries;
+  while(entries.hasMoreElements()) 
+  {
+    var entry = entries.getNext(); 
+    entry.QueryInterface(Components.interfaces.nsIFile);
+    try{
+    if (entry.isDirectory())
+    {
+      alert("EXPLODE : "+ entry.leafName);
+      addToManifest(manifestDomElement, spineDomElement, entry, root + entry.leafName + "/");
+    }
+    else
+    {
+      pageref = entry.leafName;
+      var doc = document.implementation.createDocument("", "", null);
+      var basicName = getBaseName(pageref);
+      var ext = getExtension(pageref);
+      var item = doc.createElement("item");
 
-		alert("DEBUG : "+pageref+" NAME : "+basicName+" EXT : "+ext);
-		
-		item.setAttribute("id",basicName);
-		item.setAttribute("href",root+pageref);
-		
-		if (ext == "html" || ext == "xhtml" )
-		{
-		  item.setAttribute("media-type","application/xhtml+xml");
-		  var itemSpine = doc.createElement("item");
-		  itemSpine.setAttribute("idref",basicName);
-		  spine.appendChild(itemSpine);
-		}
-		else if (ext == "css")
-		{
-		  item.setAttribute("media-type","text/css");
-		}
-		else if (ext == "jpeg")
-		{
-		  item.setAttribute("media-type","image/jpeg+xml");
-		}
-		else if (ext == "png")
-		{
-		  item.setAttribute("media-type","image/png+xml");
-		}
-		else
-		{
-		  item.setAttribute("media-type","text/plain");
-		}
-		manifestDomElement.appendChild(item);
-        }
+      alert("DEBUG : "+pageref+" NAME : "+basicName+" EXT : "+ext);
+      
+      item.setAttribute("id",basicName);
+      item.setAttribute("href",root+pageref);
+      
+      if (ext == "html" || ext == "xhtml" )
+      {
+	item.setAttribute("media-type","application/xhtml+xml");
+	var itemSpine = doc.createElement("itemref");
+	itemSpine.setAttribute("idref",basicName);
+	spineDomElement.appendChild(itemSpine);
+      }
+      else if (ext == "css")
+      {
+	item.setAttribute("media-type","text/css");
+      }
+      else if (ext == "jpeg")
+      {
+	item.setAttribute("media-type","image/jpeg+xml");
+      }
+      else if (ext == "png")
+      {
+	item.setAttribute("media-type","image/png+xml");
+      }
+      else
+      {
+	item.setAttribute("media-type","text/plain");
+      }
+      manifestDomElement.appendChild(item);
+    }
     }
     catch(e){
-	alert("DEBUG ERROR : "+e)
+      alert("DEBUG ERROR : "+e)
     }
- }
+  }
 }
 
 /**
@@ -149,6 +149,9 @@ function createContentFile(OEBPSPath)
       itemWebPage.setAttribute("href","webPage.html");
       itemWebPage.setAttribute("media-type","application/xhtml+xml");
       manifest.appendChild(itemWebPage);
+      var itemSpine = doc.createElement("itemref");
+      itemSpine.setAttribute("idref","webPage");
+      spine.appendChild(itemSpine);
       
       var nsiFolder = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
       nsiFolder.initWithPath(OEBPSPath);
