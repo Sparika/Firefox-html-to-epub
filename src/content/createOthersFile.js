@@ -118,7 +118,7 @@ function createTocFile(folderPath)
       navLabel.appendChild(text1);
       
       var content = doc.createElement("content");
-      content.setAttribute("src","WebPage.html");
+      content.setAttribute("src","webPage.html");
       
       navPoint.appendChild(navLabel);
       navPoint.appendChild(content);
