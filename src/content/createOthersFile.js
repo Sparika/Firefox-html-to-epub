@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+var ncx_NS = "http://www.daisy.org/z3986/2005/ncx/";
+
 /**
 * @function to create and fill the minetype file
 * @param {String} folderPath A string defining the OEBPS path to save the content.opf
@@ -73,25 +75,25 @@ function createTocFile(folderPath)
 
      /*fill toc.ncx*/
       var doc = document.implementation.createDocument("", "", null);
-      var ncx = doc.createElement("ncx");
-      ncx.setAttribute("xmlns","http://www.daisy.org/z3986/2005/ncx/");
-      ncx.setAttribute("version","2005-1");
+      var ncx = doc.createElementNS(ncx_NS,"ncx");
+      //ncx.setAttribute("xmlns","http://www.daisy.org/z3986/2005/ncx/");
+      ncx.setAttributeNS(null,"version","2005-1");
       
-      var head = doc.createElement("head");
+      var head = doc.createElementNS(ncx_NS,"head");
       
-      var meta = doc.createElement("meta");
+      var meta = doc.createElementNS(ncx_NS,"meta");
       meta.setAttribute("name","dtb:uid");
       meta.setAttribute("content","http://sparika.github.com/Firefox-html-to-epub/");
       
-      var meta1 = doc.createElement("meta");
+      var meta1 = doc.createElementNS(ncx_NS,"meta");
       meta1.setAttribute("name","dtb:depht");
       meta1.setAttribute("content","2");
       
-      var meta2 = doc.createElement("meta");
+      var meta2 = doc.createElementNS(ncx_NS,"meta");
       meta2.setAttribute("name","dtb:totalPageCount");
       meta2.setAttribute("content","0");
       
-      var meta3 = doc.createElement("meta");
+      var meta3 = doc.createElementNS(ncx_NS,"meta");
       meta3.setAttribute("name","dtb:maxPageNumber");
       meta3.setAttribute("content","0");
       
@@ -100,24 +102,24 @@ function createTocFile(folderPath)
       head.appendChild(meta2);
       head.appendChild(meta3);
       
-      var docTitle = doc.createElement("docTitle");
+      var docTitle = doc.createElementNS(ncx_NS,"docTitle");
       var text = doc.createElement("text");
       text.appendChild( doc.createTextNode("Epub page"));
       
       docTitle.appendChild(text);
       
-      var navMap = doc.createElement("navMap");
+      var navMap = doc.createElementNS(ncx_NS,"navMap");
       
-      var navPoint = doc.createElement("navPoint");
+      var navPoint = doc.createElementNS(ncx_NS,"navPoint");
       navPoint.setAttribute("id","WebPage");
       navPoint.setAttribute("playOrder","1");
       
-      var navLabel = doc.createElement("navLabel");
+      var navLabel = doc.createElementNS(ncx_NS,"navLabel");
       var text1 = doc.createElement("text");
       text1.appendChild(doc.createTextNode("Page"));
       navLabel.appendChild(text1);
       
-      var content = doc.createElement("content");
+      var content = doc.createElementNS(ncx_NS,"content");
       content.setAttribute("src","webPage.html");
       
       navPoint.appendChild(navLabel);

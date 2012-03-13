@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+  var opf_NS = "http://www.idpf.org/2007/opf";
+  var dc_NS = "http://purl.org/dc/elements/1.1/";
+
 /**
 * @function to get the extension of a file
 * @param {String} file A string defining the a fileName
@@ -42,7 +45,7 @@ function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
     try{
     if (entry.isDirectory())
     {
-      alert("EXPLODE : "+ entry.leafName);
+      //alert("EXPLODE : "+ entry.leafName);
       addToManifest(manifestDomElement, spineDomElement, entry, root + entry.leafName + "/");
     }
     else
@@ -53,7 +56,7 @@ function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
       var ext = getExtension(pageref);
       var item = doc.createElement("item");
 
-      alert("DEBUG : "+pageref+" NAME : "+basicName+" EXT : "+ext);
+      //alert("DEBUG : "+pageref+" NAME : "+basicName+" EXT : "+ext);
       
       item.setAttribute("id",basicName);
       item.setAttribute("href",root+pageref);
@@ -96,7 +99,7 @@ function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
 * @return {nsIFile} An nsIFile pointing on content.opf
 */
 function createContentFile(OEBPSPath)
-{
+{  
       var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
       file.initWithPath(OEBPSPath);
 
@@ -107,23 +110,23 @@ function createContentFile(OEBPSPath)
 
       /*fill content.opf*/
       var doc = document.implementation.createDocument("", "", null);
-      var Package = doc.createElement("package");
-      Package.setAttribute("version","2.0");
-      Package.setAttribute("xmlns","http://www.idpf.org/2007/opf");
-      Package.setAttribute("unique-identifier","BookId");
-      var metadata = doc.createElement("metadata");
+      var Package = doc.createElementNS(opf_NS,"package");
+      Package.setAttributeNS(null,"version","2.0");
+      //Package.setAttribute("xmlns","http://www.idpf.org/2007/opf");
+      Package.setAttributeNS(null,"unique-identifier","BookId");
+      var metadata = doc.createElementNS(opf_NS,"metadata");
 
-      var title = doc.createElement("dc:title");
+      var title = doc.createElementNS(dc_NS,"dc:title");
       title.appendChild(doc.createTextNode("titleText"));
-      var creator = doc.createElement("dc:creator");
+      var creator = doc.createElementNS(dc_NS,"dc:creator");
       creator.appendChild(doc.createTextNode("creatorText")); 
-      var language = doc.createElement("dc:language");
+      var language = doc.createElementNS(dc_NS,"dc:language");
       language.appendChild(doc.createTextNode("languageText")); 
-      var rights = doc.createElement("dc:rights");
+      var rights = doc.createElementNS(dc_NS,"dc:rights");
       rights.appendChild(doc.createTextNode("rightsText")); 
-      var publisher = doc.createElement("dc:publisher");
+      var publisher = doc.createElementNS(dc_NS,"dc:publisher");
       publisher.appendChild(doc.createTextNode("publisherText")); 
-      var identifier = doc.createElement("dc:identifier");
+      var identifier = doc.createElementNS(dc_NS,"dc:identifier");
       identifier.appendChild(doc.createTextNode("dc:identifier")); 
 
       metadata.appendChild(title);
@@ -133,9 +136,9 @@ function createContentFile(OEBPSPath)
       metadata.appendChild(publisher);
       metadata.appendChild(identifier);
 
-      var manifest = doc.createElement("manifest");
+      var manifest = doc.createElementNS(opf_NS,"manifest");
 
-      var spine = doc.createElement("spine");
+      var spine = doc.createElementNS(opf_NS,"spine");
       spine.setAttribute("toc","ncx");
 
       var itemSpine = doc.createElement("item");
