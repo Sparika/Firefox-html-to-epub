@@ -1,5 +1,6 @@
 content   xulfhte                content/
 skin      xulfhte  classic/1.0   skin/
 locale    xulfhte  en-US         locale/en-US/
+locale    xulfhte  fr-FR         locale/fr-FR/
 
 overlay chrome://browser/content/browser.xul  chrome://xulfhte/content/browserOverlay.xul

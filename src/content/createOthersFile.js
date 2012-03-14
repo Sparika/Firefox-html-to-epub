@@ -39,6 +39,12 @@ function createContainerFile(folderPath)
                       .createInstance(Components.interfaces.nsIFileOutputStream);   
       file.append("container.xml"); // filename  
       oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
+      
+      //Append XML versions (seems to not be added without this code)
+      var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].  
+                createInstance(Components.interfaces.nsIConverterOutputStream);  
+      converter.init(oFOStream, "UTF-8", 0, 0);  
+      converter.writeString("<?xml version=\"1.0\"?>");  
 
       //create DOM doc
       var doc = document.implementation.createDocument("", "", null);
@@ -72,6 +78,12 @@ function createTocFile(folderPath)
       file.append("toc.ncx"); // filename  
       oFOStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
       var doc = document.implementation.createDocument("", "", null);
+      
+      //Append XML versions (seems to not be added without this code)
+      var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].  
+                createInstance(Components.interfaces.nsIConverterOutputStream);  
+      converter.init(oFOStream, "UTF-8", 0, 0);  
+      converter.writeString("<?xml version=\"1.0\"?>");  
 
      /*fill toc.ncx*/
       var doc = document.implementation.createDocument("", "", null);
@@ -82,20 +94,20 @@ function createTocFile(folderPath)
       var head = doc.createElementNS(ncx_NS,"head");
       
       var meta = doc.createElementNS(ncx_NS,"meta");
-      meta.setAttribute("name","dtb:uid");
-      meta.setAttribute("content","http://sparika.github.com/Firefox-html-to-epub/");
+      meta.setAttributeNS(null,"name","dtb:uid");
+      meta.setAttributeNS(null,"content","http://sparika.github.com/Firefox-html-to-epub/");
       
       var meta1 = doc.createElementNS(ncx_NS,"meta");
-      meta1.setAttribute("name","dtb:depht");
-      meta1.setAttribute("content","2");
+      meta1.setAttributeNS(null,"name","dtb:depht");
+      meta1.setAttributeNS(null,"content","2");
       
       var meta2 = doc.createElementNS(ncx_NS,"meta");
-      meta2.setAttribute("name","dtb:totalPageCount");
-      meta2.setAttribute("content","0");
+      meta2.setAttributeNS(null,"name","dtb:totalPageCount");
+      meta2.setAttributeNS(null,"content","0");
       
       var meta3 = doc.createElementNS(ncx_NS,"meta");
-      meta3.setAttribute("name","dtb:maxPageNumber");
-      meta3.setAttribute("content","0");
+      meta3.setAttributeNS(null,"name","dtb:maxPageNumber");
+      meta3.setAttributeNS(null,"content","0");
       
       head.appendChild(meta);
       head.appendChild(meta1);
@@ -103,7 +115,7 @@ function createTocFile(folderPath)
       head.appendChild(meta3);
       
       var docTitle = doc.createElementNS(ncx_NS,"docTitle");
-      var text = doc.createElement("text");
+      var text = doc.createElementNS(ncx_NS,"text");
       text.appendChild( doc.createTextNode("Epub page"));
       
       docTitle.appendChild(text);
@@ -111,16 +123,16 @@ function createTocFile(folderPath)
       var navMap = doc.createElementNS(ncx_NS,"navMap");
       
       var navPoint = doc.createElementNS(ncx_NS,"navPoint");
-      navPoint.setAttribute("id","WebPage");
-      navPoint.setAttribute("playOrder","1");
+      navPoint.setAttributeNS(null,"id","WebPage");
+      navPoint.setAttributeNS(null,"playOrder","1");
       
       var navLabel = doc.createElementNS(ncx_NS,"navLabel");
-      var text1 = doc.createElement("text");
+      var text1 = doc.createElementNS(ncx_NS,"text");
       text1.appendChild(doc.createTextNode("Page"));
       navLabel.appendChild(text1);
       
       var content = doc.createElementNS(ncx_NS,"content");
-      content.setAttribute("src","webPage.html");
+      content.setAttributeNS(null,"src","webPage.html");
       
       navPoint.appendChild(navLabel);
       navPoint.appendChild(content);

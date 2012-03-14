@@ -2,8 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-Components.utils.import("resource://gre/modules/NetUtil.jsm");  
-Components.utils.import("resource://gre/modules/FileUtils.jsm"); 
+Components.utils.import("resource://gre/modules/NetUtil.jsm");
+Components.utils.import("resource://gre/modules/FileUtils.jsm");
+
+var uuidGenerator = Components.classes["@mozilla.org/uuid-generator;1"].getService(Components.interfaces.nsIUUIDGenerator);
+var uuid = uuidGenerator.generateUUID();
+var uuidString = uuid.toString();
+var uri = "urn:uuid:"+uuidString;
+    uri = uri.replace("{", "", "gi");
+    uri = uri.replace("}", "", "gi");
+
 /**
  * XULfhte namespace.
  */
@@ -22,13 +30,14 @@ XULFHtEChrome.BrowserOverlay = {
     savePage();
   }
 };
+  // nsIFile :
+  var tmp_D; //System's temorary directory
+  var epubPath; //path to the EPUB to be created
+  var METAINF_D; //METAINF directory
+  var OEPBS_D; //OEPBS directory
+  var mimetypePtr; //mimetype file
   
-  var tmp_D;
-  var epubPath;
-  var METAINF_D;
-  var OEPBS_D;
-  var mimetypePtr;
-  var wbp;
+  var wbp; //nsIWebBrowserPersist object
   
   const STATE_START = Components.interfaces.nsIWebProgressListener.STATE_START;  
   const STATE_STOP = Components.interfaces.nsIWebProgressListener.STATE_STOP;  
@@ -74,7 +83,7 @@ function savePage(){
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Save webpage as epub", nsIFilePicker.modeSave);
-    fp.appendFilter("EPUB File","*.html");
+    fp.appendFilter("EPUB File","*.epub");
   
     var rv = fp.show();
     if (rv == fp.returnCancel) return;
@@ -89,12 +98,6 @@ function savePage(){
     epubPath.initWithPath(cleanpath+".epub");
   
     var ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);  
-    var uri = ios.newURI("http://www.google.com/", null, null);
-  
-    var uuidGenerator = Components.classes["@mozilla.org/uuid-generator;1"].getService(Components.interfaces.nsIUUIDGenerator);
-    var uuid = uuidGenerator.generateUUID();
-    var uuidString = uuid.toString();
-    var uri = "urn:uuid:"+uuidString;
   
     /**
     * |2| Save the main html page and create the working directory
@@ -152,7 +155,7 @@ function createEPUB(){
   // container.xml
   createContainerFile(METAINF_D.path);
   // content.opf
-  createContentFile(OEBPS_D.path);
+  createContentFile(OEBPS_D.path, uri);
   // toc.ncx
   createTocFile(OEBPS_D.path);
 
@@ -165,5 +168,5 @@ function createEPUB(){
   * Delete all temporary files
   */
   //All file have been created in temporary directory
-  alert("EXIT SUCCESS");
+  //alert("EXIT SUCCESS");
 }

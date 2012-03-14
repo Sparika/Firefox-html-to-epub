@@ -20,6 +20,10 @@ const PR_EXCL        = 0x80;
 */
 function zipFolder(source, dest, mimetype)
 {
+//Locale
+stringsBundle = document.getElementById("xulfhte-string-bundle");
+ var replaceFile = stringsBundle.getString('xulfhte.zipTools.replaceFile');
+   
  // Create a new file
  var zipOk = true;
  
@@ -29,7 +33,7 @@ function zipFolder(source, dest, mimetype)
  try{
     dest.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666); 
  }catch(err){
-    if(confirm(err.message+"\n"+"This file already exists, do you want to replace it?")){
+    if(confirm(replaceFile)){
         dest.remove(false);
         dest.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666); 
     }

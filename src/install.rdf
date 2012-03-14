@@ -9,8 +9,8 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>kevin.corre@etu.univ-orleans.fr</em:id>
-    <em:name>Firefox HTML to EPUB</em:name>
-    <em:description>Save HTML to EPUB file</em:description>
+    <em:name>Firefox: HTML to EPUB</em:name>
+    <em:description>Save an HTML page to an EPUB file</em:description>
     <em:version>0.1</em:version>
     <em:creator>Mozilla/Universite d'Orleans</em:creator>
     <em:homepageURL>http://sparika.github.com/Firefox-html-to-epub/</em:homepageURL>

@@ -30,7 +30,7 @@ src="chrome://xulfhte/content/zipTools.js" />
 
   <menupopup id="menu_FilePopup">
         <menuitem id="xulfhte-fhte-menu-item1"
-          label="Save as Epub"
+          label="&xulfhte.fhte.label;"
           oncommand="XULFHtEChrome.BrowserOverlay.doWork(event);" />
   </menupopup>
 
