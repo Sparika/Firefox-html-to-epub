@@ -24,7 +24,7 @@ function getExtension(fileName){
 * @return {String} The filename without the extension. 
 */
 function getBaseName(fileName){
-  return fileName.substring(0,fileName.lastIndexOf(".")-1); 
+  return fileName.substring(0,fileName.lastIndexOf(".")); 
 }
 
 /**
@@ -57,8 +57,10 @@ function addToManifest(manifestDomElement, spineDomElement, nsiFolder, root)
       var item = doc.createElementNS(opf_NS,"item");
 
       //alert("DEBUG : "+pageref+" NAME : "+basicName+" EXT : "+ext);
-      
-      item.setAttributeNS(null,"id",basicName);
+      if (basicName=="")
+	item.setAttributeNS(null,"id",ext);
+      else
+	item.setAttributeNS(null,"id",basicName);
       item.setAttributeNS(null,"href",root+pageref);
       
       if (ext == "html" || ext == "xhtml" )
