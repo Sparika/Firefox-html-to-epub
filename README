@@ -5,7 +5,7 @@
                               ======                                   
                                                                        
                           HTMLtoEPUB v0.1
-                          09 February 2012
+                           14 March 2012
                                                                        
                          Firefox extension 
 
@@ -19,6 +19,9 @@ This project aims at allowing Firefox's users to save an HTML page as an EPUB (E
 
 Install
 Drag and drop the xpi file (located in /bin directory) onto your browser.
+
+Note
+You can use EPUBReader an extension to read EPUB just in your browser.
 
 Contact
 Kevin (kevin.corre@etu.univ-orleans.fr) 
